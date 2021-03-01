@@ -1,0 +1,195 @@
+type Query {
+    # All with / without query
+    getUser(id:ID):User!
+    stores(query:String):[Store!]!
+    departments(query:String,id:ID):[Department!]!
+    categories(query:String,id:ID):[Category!]!
+    products(query:String,id:ID,selected:[SelectedProducts]):[Product!]!
+    userOrders(user_id:ID!):[Order!]!
+    # shoppingCart(query:String):[Product]!
+    shoppingCart(id:ID):[CartItem!]!
+    userCartItems(query:ID):[Product!]!
+    # Single 
+    department:Department!
+    category: Category!
+    product:Product!
+    cartItem:CartItem!
+    store:Store!
+    order:Order!
+    orderItem:OrderItem!
+}
+
+type Mutation {
+    # shopping Cart
+    register(data:registerInput):User!
+    login(data:loginInput):String!
+    addCartItem(data:AddCartItemInput):CartItem!
+    deleteCartItem(data:DeleteCartItemInput):CartItem!
+    emptyCart(user_id:ID!):[CartItem!]
+    updateCartItem(data:UpdateCartItemInput):CartItem!
+    addOrder(user_id:ID!,
+    store: String!
+    delivery_address: String!
+    delivery_window: String!
+    sub_total: Float!
+    delivery_charge: Float!
+    gst_total: Float!
+    grand_total: Float!):Order!
+    addOrderItem(data:addOrderItemInput):OrderItem!
+    # removeCartItem(id: ID!): Product!
+    # updateCartItem(id: ID!, data: UpdateCartItemInput!): Product!
+}
+
+type Subscription{
+    count:Int!
+    cartInfo(userId:ID!):[CartItem!]!
+}
+
+input SelectedProducts{
+    name: String!
+}
+
+input AddCartItemInput {
+    quantity:Int!
+    user_id:ID!
+    product_id:ID!
+}
+input UpdateCartItemInput {
+  quantity:Int!
+  user_id: ID!
+  product_id: ID!
+}
+input DeleteCartItemInput{
+    user_id:ID!
+    product_id:ID!
+}
+input addOrderItemInput{
+    product_id:ID!
+    quantity:Int!
+    price:Float!
+    order_id:ID!
+}
+input registerInput {
+    email: String!
+    username:String!
+    password:String!
+}
+input loginInput{
+    email:String!
+    password:String!
+}
+
+# type defs
+
+# type User {
+#     id: ID!
+#     email: String!
+#     password:String!
+#     shoppingCart:[Product!]!
+# }
+
+type Store{
+    id:ID!
+    name:String!
+    # building_number:String!
+    # street:String!
+    # city:String!
+    # postal_code:String!
+    # state:String!
+    # country:String!
+}
+
+type Department {
+  id: ID!
+  name: String!
+  image:String!
+  categories: [Category!]!
+  products: [Product!]!
+}
+type Category {
+  id: ID!
+  name: String!
+  department:Department!
+  products: [Product!]!
+}   
+
+type Product {
+    id:ID!
+    name:String!
+    description:String!
+    price:Float! # to be chnaged to Int!
+    quantity:Int!
+    image:String!
+    # store_id:ID
+    # store_name:String
+    # user_id:ID!
+    # product_id:ID!
+    store:Store!
+    department:Department!
+    category:Category!
+}
+
+type CartItem {
+  id: ID!
+  name: String!
+  description: String!
+  price: Float! # to be chnaged to Int!
+  quantity: Int!
+  image:String!
+  user_id:ID!
+  product_id:ID!
+  department: Department!
+  category: Category!
+}
+
+type Order{
+    id:ID!
+    user_id:ID!
+    store:String!
+    delivery_address:String!
+    delivery_window:String!
+    sub_total:Float!
+    delivery_charge:Float!
+    gst_total:Float!
+    grand_total:Float!
+    created_at:String!
+    orderItems:[OrderItem!]!
+}
+
+type OrderItem{
+    id:ID!
+    product_id:ID!
+    quantity:Float!
+    price:Float!
+    order_id:ID!
+    name:String!
+    image:String!
+}
+
+type User{
+    id:ID!
+    email:String!
+    username:String!
+    # password:String!
+}
+# type Token{
+#     token:String!
+# }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
